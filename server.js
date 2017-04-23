@@ -1,11 +1,16 @@
-import http from 'http';
+import express from 'express';
+import config from './config';
+import apiRouter from './api';
 
-const server = http.createServer((req, res) => {
-	res.write("Hello There!!!\n");
-	setTimeout(()=>{
-		res.write("I can Stream!!!\n");
-		res.end();
-	}, 3000);
+const server = express();
+
+server.get('/', (req, res)=>{
+	res.send("Hello, this is Express\n");
 });
 
-server.listen(8080);
+server.use('/api', apiRouter);
+server.use(express.static('public'));
+
+server.listen(config.port, ()=>{
+	console.log('Express is listening on port ' + config.port);
+});
